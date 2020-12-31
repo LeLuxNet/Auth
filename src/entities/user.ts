@@ -15,8 +15,12 @@ export interface ATData {
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn({ type: "uuid" })
   id!: string;
+
+  get displayId() {
+    return this.id.replace("-", "");
+  }
 
   @Column({ type: "citext", unique: true })
   username!: string;
@@ -40,13 +44,13 @@ export class User extends BaseEntity {
 
   getRTData(): RTData {
     return {
-      sub: this.id,
+      sub: this.displayId,
     };
   }
 
   getATData(): ATData {
     return {
-      sub: this.id,
+      sub: this.displayId,
       username: this.username,
       email: this.email,
       emailVerified: this.emailVerified,

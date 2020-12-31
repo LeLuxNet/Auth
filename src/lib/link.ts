@@ -14,12 +14,16 @@ interface LinkData {
 }
 
 export async function createLink(user: User, usage: LinkUsage) {
-  // TODO: Not override existing token
+  const data: LinkData = { uid: user.id, usage };
+  const val = JSON.stringify(data);
 
-  const token = v4();
-  await jset(token, { uid: user.id, usage } as LinkData, "ex", 60 * 60); // 1 hour
-
-  return token;
+  while (true) {
+    const token = v4();
+    const ret = await redis.set(token, val, ["ex", "nx"], 60 * 60); // 1 hour
+    if (ret === "OK") {
+      return token;
+    }
+  }
 }
 
 export async function applyLink(token: string): Promise<LinkUsage | null> {

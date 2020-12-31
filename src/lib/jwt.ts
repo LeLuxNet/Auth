@@ -40,7 +40,7 @@ async function verifyRT(token: string) {
   return data.sub;
 }
 
-async function createRToken(user: User) {
+export async function createRToken(user: User) {
   const token = await sign(user.getRTData(), RT_SECRET);
 
   await RefreshToken.create({ token }).save();
