@@ -2,11 +2,14 @@
   "name": "auth",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "license": "MIT",
+  "main": "dist/index.js",
   "scripts": {
     "start": "nodejs dist/index.js",
     "build": "tsc",
-    "dev": "npm run build && npm run start",
+    "prepare": "npm run build",
+    "dev": "ts-node src/index.ts",
+    "watch": "ts-node-dev --respawn src/index.ts",
     "test": "jest"
   },
   "jest": {
@@ -16,7 +19,7 @@
     ]
   },
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "crypto-random-string": "^3.3.0",
     "express": "^4.17.1",
@@ -39,6 +42,8 @@
     "@types/uuid": "^8.3.0",
     "jest": "^26.6.3",
     "ts-jest": "^26.4.4",
+    "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.1",
     "typescript": "^4.1.3"
   }
 }
