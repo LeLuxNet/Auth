@@ -1,4 +1,10 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Role } from "./role";
 
 export interface RTData {
@@ -17,10 +23,6 @@ export interface ATData {
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
-
-  get displayId() {
-    return this.id.replace("-", "");
-  }
 
   @Column({ type: "citext", unique: true })
   username!: string;
@@ -42,19 +44,6 @@ export class User extends BaseEntity {
   })
   roles!: Role[];
 
-  getRTData(): RTData {
-    return {
-      sub: this.displayId,
-    };
-  }
-
-  getATData(): ATData {
-    return {
-      sub: this.displayId,
-      username: this.username,
-      email: this.email,
-      emailVerified: this.emailVerified,
-      roles: this.roles,
-    };
-  }
+  @CreateDateColumn({ type: "timestamp" })
+  createdAt!: Date;
 }

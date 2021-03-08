@@ -21,3 +21,7 @@ interface PasswordRegistration {
 export function register(data: Registration) {
   return api.post("register", data);
 }
+
+export function data() {
+  return api.get("data");
+}

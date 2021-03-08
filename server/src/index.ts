@@ -1,13 +1,14 @@
 require("./consts");
 
+import cookieParser from "cookie-parser";
 import express from "express";
 import { createConnection } from "typeorm";
 import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from "./consts";
-import { RefreshToken } from "./entities/refreshToken";
+import { Token } from "./entities/token";
 import { User } from "./entities/user";
+import { data } from "./routes/data";
 import { login } from "./routes/login";
 import { logout } from "./routes/logout";
-import { refresh } from "./routes/refresh";
 import { register } from "./routes/register";
 
 const PORT = process.env.PORT || 80;
@@ -24,7 +25,7 @@ const main = async () => {
 
     synchronize: true,
     logging: true,
-    entities: [User, RefreshToken],
+    entities: [User, Token],
   });
 
   const app = express();
@@ -33,6 +34,7 @@ const main = async () => {
   app.get("/bundle.js", express.static("../client/dist"));
 
   app.use(express.json());
+  app.use(cookieParser());
 
   /*
   Input:
@@ -45,11 +47,6 @@ const main = async () => {
           email: string
           password: string
           password2?: string
-  Output:
-    accessToken: string
-      => store
-    refreshToken: string
-      => store
   */
   app.post("/api/register", register);
 
@@ -63,30 +60,16 @@ const main = async () => {
           password: string
       => limited
           code?: string
-  Output:
-    accessToken: string
-      => store
-    refreshToken: string
-      => store
   */
   app.post("/api/login", login);
 
   /*
   Input:
-    refreshToken: string
-  Output:
-    accessToken: string | null
-      string => store
-      null => send user to login
-  */
-  app.post("/api/refresh", refresh);
-
-  /*
-  Input:
-    refreshToken: string
-  Output:
+    token: string
   */
   app.delete("/api/logout", logout);
+
+  app.get("/api/data", data);
 
   app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

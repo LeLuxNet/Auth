@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { register } from "./api.ts";
+import { data, register } from "./api";
 
 function App() {
   return (
@@ -10,13 +10,16 @@ function App() {
         onClick={() => {
           register({
             method: "password",
-            email: prompt("email"),
-            username: prompt("username"),
-            password: prompt("password"),
+            email: prompt("email")!,
+            username: prompt("username")!,
+            password: prompt("password")!,
           });
         }}
       >
         Register
+      </button>
+      <button onClick={() => data().then((res) => console.log(res.data.data))}>
+        Get data
       </button>
     </>
   );

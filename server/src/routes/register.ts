@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
+import { Token } from "../entities/token";
 import { User } from "../entities/user";
 import { error, ErrorField, fieldRequired } from "../error";
+import { setToken } from "../lib/cookie";
 import { hashPassword } from "../lib/crypto";
-import { createTokens } from "../lib/jwt";
 import { pwnCount } from "../lib/pwned";
 
 enum RegisterMethods {
@@ -80,12 +81,8 @@ export async function register(req: Request, res: Response) {
     }
   }
 
-  const { at, rt } = await createTokens(user);
+  const { token } = await Token.create({ user }).save();
+  setToken(res, token);
 
-  res.send({
-    data: {
-      accessToken: at,
-      refreshToken: rt,
-    },
-  });
+  res.send({});
 }

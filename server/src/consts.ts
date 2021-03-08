@@ -24,3 +24,5 @@ export const EMAIL_FROM = `"${EMAIL_NAME}" <${EMAIL_USER}>`;
 export const AT_SECRET = env("AT_SECRET");
 export const RT_SECRET = env("RT_SECRET");
 export const AT_EXPIRATION_TIME = 15; // 15s
+
+export const PRODUCTION = process.env.NODE_ENV === "production";
