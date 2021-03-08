@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { User } from "../entities/user";
-import { jget, jset, redis } from "../redis";
+import { jget, redis } from "../redis";
 
 export enum LinkUsage {
   EMAIL_VERIFICATION,

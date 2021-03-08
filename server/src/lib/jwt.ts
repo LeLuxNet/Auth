@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { RefreshToken } from "../entities/refreshToken";
-import { User, RTData } from "../entities/user";
 import { AT_EXPIRATION_TIME, AT_SECRET, RT_SECRET } from "../consts";
+import { RefreshToken } from "../entities/refreshToken";
+import { RTData, User } from "../entities/user";
 
 function sign(
   payload: object,

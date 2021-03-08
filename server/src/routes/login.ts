@@ -14,7 +14,7 @@ enum LoginMethods {
 const limitedUrl = "https://auth.lelux.net/verify";
 
 export async function login(req: Request, res: Response) {
-  const { method } = req.body;
+  const method = req.body.method;
   var user: User | undefined;
 
   switch (method) {

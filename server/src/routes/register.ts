@@ -59,7 +59,7 @@ export async function register(req: Request, res: Response) {
       if (count !== 0) {
         const countStr = count === 1 ? "1 time" : `${count} times`;
 
-        error(
+        return error(
           res,
           `Your password has already been found ${countStr} in data leaks. Please choose a different one`,
           ErrorField.PASSWORD

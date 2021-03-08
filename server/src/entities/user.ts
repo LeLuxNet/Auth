@@ -15,7 +15,7 @@ export interface ATData {
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn({ type: "uuid" })
+  @PrimaryGeneratedColumn("uuid")
   id!: string;
 
   get displayId() {

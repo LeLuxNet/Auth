@@ -1,7 +1,6 @@
 import cryptoRandomString from "crypto-random-string";
 import { User } from "../entities/user";
 import { redis } from "../redis";
-import { createRToken, createTokens } from "./jwt";
 
 // Uppercase characters without 0 and O
 const characters = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";

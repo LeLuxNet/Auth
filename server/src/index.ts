@@ -1,12 +1,14 @@
-import "./consts";
+require("./consts");
 
 import express from "express";
 import { createConnection } from "typeorm";
-import { register } from "./routes/register";
-import { refresh } from "./routes/refresh";
 import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from "./consts";
+import { RefreshToken } from "./entities/refreshToken";
+import { User } from "./entities/user";
 import { login } from "./routes/login";
 import { logout } from "./routes/logout";
+import { refresh } from "./routes/refresh";
+import { register } from "./routes/register";
 
 const PORT = process.env.PORT || 80;
 
@@ -22,10 +24,14 @@ const main = async () => {
 
     synchronize: true,
     logging: true,
-    entities: ["dist/entities/*.js"],
+    entities: [User, RefreshToken],
   });
 
   const app = express();
+
+  app.get("/", express.static("../client"));
+  app.get("/bundle.js", express.static("../client/dist"));
+
   app.use(express.json());
 
   /*
@@ -45,7 +51,7 @@ const main = async () => {
     refreshToken: string
       => store
   */
-  app.post("/register", register);
+  app.post("/api/register", register);
 
   /*
   Input:
@@ -63,7 +69,7 @@ const main = async () => {
     refreshToken: string
       => store
   */
-  app.post("/login", login);
+  app.post("/api/login", login);
 
   /*
   Input:
@@ -73,14 +79,14 @@ const main = async () => {
       string => store
       null => send user to login
   */
-  app.post("/refresh", refresh);
+  app.post("/api/refresh", refresh);
 
   /*
   Input:
     refreshToken: string
   Output:
   */
-  app.delete("/logout", logout);
+  app.delete("/api/logout", logout);
 
   app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
